@@ -1,3 +1,6 @@
+
+![Url shortner architecture](https://github.com/sushruth-06/URL-Shortener-App/assets/44200208/87512719-c0cf-40f8-b492-4496e0e209e3)
+
 ## SCALABLE, FAULT TOLERANT, EFFECIENT AND ZERO COLLISIONS 
 
 The ones listed above are the main features of the app which is essential for a URL shortener service. Every component is designed to adhere to the above features. The design choice and reasoning for the same is listed below:
