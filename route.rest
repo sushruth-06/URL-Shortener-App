@@ -1,0 +1,30 @@
+GET http://localhost:3000/urls
+
+###
+
+GET http://localhost:3000/urls/history/2
+
+###
+
+POST http://localhost:3000/urls
+Content-Type: application/json
+
+{
+    "longUrl":"Big",
+    "user":2
+}
+
+###
+
+GET http://localhost:3000/urls/v
+
+###
+
+POST http://localhost:3000/urls
+Content-Type: application/json
+
+{
+    "longUrl":"Big",
+    "shortUrl":"smol",
+    "user":2
+}
