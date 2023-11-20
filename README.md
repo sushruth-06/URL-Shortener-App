@@ -31,9 +31,38 @@ tier schema: {1:5000 requests limit,
 
 ### Short URL generation:
 - We could generate a random URL and try to insert it to the DB using the putIfAbsent clause, but this may result in a lot of collisions. Additionally, we could use a MD5 or SHA256 algorithm to generate a unique value but as the size of hashed output is more than 7, we would have to use only the first 7 or 8 characters which would again lead to collisions.
-- Instead, we could maintain a counter, which we would pass to a base62 encoder that would result in a unique value every time we generate a short URL resulting in zero collisions. To overcome a single point of failure and maintain the counter across all servers we use the Apache ZooKeeper which is a highly reliable distributed coordinator.
 - If we use 7 a short URL of 7 chars using base 62 we have about 3.5 Trillion unique short URLs we could generate.
+- Instead, we could maintain a counter, which we would pass to a base62 encoder that would result in a unique value every time we generate a short URL resulting in zero collisions.
+
+### ZooKeeper:
+- To overcome a single point of failure and maintain the counter across all servers we use the Apache ZooKeeper which is a highly reliable distributed coordinator.
 - ZooKeeper maintains ranges of unused counters. When servers are added these servers will ask for the unused range from Zookeepers. In the worst case, if one of the servers goes down then only that range of data is affected. We can replicate data of master to its slave and while we try to bring master back, we can divert read queries to its slaves.
+
+### REST Endpoints:
+- An endpoint that takes in a long URL and returns a shortened one:
+  - POST http://localhost:3000/urls  
+        Content-Type: application/json  
+        ```
+        {
+            "longUrl":"(https://www.youtube.com/watch?v=F2hVTkL6bNM)",
+            "user":2
+        }
+        ```  
+        or if user want a custom short url the below can be used  
+        ```
+        {
+            "longUrl":"(https://www.youtube.com/watch?v=F2hVTkL6bNM)",
+            "shortUrl": "customUrl"
+            "user":4
+        }
+        ```
+- An endpoint that returns a history of all URLs shortened by a given user:
+  - GET http://localhost:3000/urls/history/:id
+    
+- The short urls redirect to their long url counterparts:
+  - GET http://localhost:3000/urls/customUrl
+
+
 
 
 
